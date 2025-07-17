@@ -1,11 +1,12 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"encoding/json"
 	"os"
+
 	"github.com/joho/godotenv"
 )
 
@@ -37,22 +38,21 @@ func main() {
 	}
 
 	accessKey := os.Getenv("ACCESS_KEY")
-	fmt.Println("Chave:", accessKey)
 
 	urlKey := fmt.Sprintf("%sapikey=%s&currencies=%s&base_currency=%s", apiURL, accessKey, final_currency, base_currency)
 	resp, err := http.Get(urlKey)
 
-		if err != nil {
+	if err != nil {
 		fmt.Println("Error in the request: ", err)
 		return
 	}
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-        fmt.Println("Erro ao ler resposta:", err)
-        return
-    }
+	if err != nil {
+		fmt.Println("Erro ao ler resposta:", err)
+		return
+	}
 
 	var coin Coin
 
@@ -63,8 +63,8 @@ func main() {
 	}
 
 	for moeda, valor := range coin.Data {
-    	fmt.Printf("Conversion: %s to %s| 1 %s is equal to %.10f %s\n", base_currency, moeda, base_currency, valor, moeda)
+		fmt.Printf("Conversion: %s to %s | 1 %s is equal to %.10f %s\n", base_currency, moeda, base_currency, valor, moeda)
 		final_value = base_value * valor
 		fmt.Printf("Converted the value: %.4f %s", final_value, moeda)
-    }
+	}
 }
