@@ -25,12 +25,25 @@ func main() {
 	fmt.Println("Enter a value to convert:")
 	fmt.Scan(&base_value)
 
-	fmt.Println("Enter a base money (EUR,USD,JPN...): ")
+	fmt.Println("Enter a base currency (EUR,USD,JPN...): ")
 	fmt.Scan(&base_currency)
+
+	for len(base_currency) != 3 {
+		fmt.Println("Insert a valid currency")
+		fmt.Println("Enter a base currency (EUR,USD,JPN...): ")
+		fmt.Scan(&base_currency)
+	}
 
 	fmt.Println("Enter a money to convert (EUR,USD,JPN...): ")
 	fmt.Scan(&final_currency)
-	fmt.Println("Money choosed:", final_currency)
+
+	for len(final_currency) != 3 {
+		fmt.Println("Insert a valid currency")
+		fmt.Println("Enter a base currency (EUR,USD,JPN...): ")
+		fmt.Scan(&final_currency)
+	}
+
+	fmt.Println("Currency choosed:", final_currency)
 
 	err := godotenv.Load()
 	if err != nil {
@@ -63,8 +76,8 @@ func main() {
 	}
 
 	for moeda, valor := range coin.Data {
-		fmt.Printf("Conversion: %s to %s | 1 %s is equal to %.10f %s\n", base_currency, moeda, base_currency, valor, moeda)
+		fmt.Printf("Conversion: %s to %s | 1 %s is equal to %.2f %s\n", base_currency, moeda, base_currency, valor, moeda)
 		final_value = base_value * valor
-		fmt.Printf("Converted the value: %.4f %s", final_value, moeda)
+		fmt.Printf("Converted the value: %.2f %s", final_value, moeda)
 	}
 }
